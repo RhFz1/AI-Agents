@@ -1,9 +1,10 @@
 import os
 import csv
 from typing import Optional
-from datetime import datetime
+import datetime
 from dateutil import parser
 from langchain.agents import tool
+from typing import Tuple
 
 @tool
 def read_csv(input_path: str) -> str:
@@ -15,17 +16,21 @@ def read_csv(input_path: str) -> str:
             csv_data += ','.join(row) + '\n'
     return csv_data
 @tool
-def extract_dates(text: str):
-    """This function takes in a relevant text body which contain a single date context and returns a date object, in case of multiple dates try to run the function multiple times only with the relevant body of text which contains a single date"""
-    return parser.parse(text).date()
+def get_current_date() -> Tuple[datetime.date, str]:
+    """This function returns the current date and day of the week for calculation purposes"""
+    return datetime.date.today(), datetime.date.today().strftime("%A")
 @tool
-def convert_to_time(text: str) -> datetime.time:
-    """This function takes in a relevant text body which contain a single time context and returns a time object, in case of multiple times try to run the function multiple times only with the relevant body of text which contains a single time"""
-    return datetime.strptime(text, "%H:%M:%S").time()
+def get_current_time() -> datetime.datetime:
+    """This function returns the current time for calculation purposes"""
+    return datetime.datetime.now()
+@tool
+def automate_leave_application(name: str, start: str, end: str, reason: Optional[str]) -> str:
+    """If given the start and end date, this function will automate the leave application for the given reason which is optional"""
+    return f"Leave has been applied for {name} from {start} to {end} for the reason: {reason}"
 @tool
 def send_mail(text: Optional[str], subject: Optional[str], recipient: Optional[str], cc: Optional[str]) -> str:
     """This function sends an email to the recipient with the given subject and text"""
     return f"Email has been sent to {recipient} with subject: {subject} and text: {text}"
 
 
-mail_tools = [read_csv, extract_dates, send_mail, convert_to_time]
+mail_tools = [read_csv, get_current_date, send_mail, automate_leave_application, get_current_time]
