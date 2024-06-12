@@ -26,17 +26,25 @@ def get_current_time() -> datetime.datetime:
     """This function returns the current time for calculation purposes"""
     return datetime.datetime.now()
 @tool
+def get_time_difference(start: str, end: str) -> int:
+    """This function takes in start time and end time in HH:MM:SS format and returns the total number of hours between these two times"""
+    start = datetime.datetime.strptime(start, "%H:%M:%S")
+    end = datetime.datetime.strptime(end, "%H:%M:%S")
+    diff = (end - start).total_seconds() / 3600
+    return diff
+@tool
 def automate_leave_application(name: str, start: str, end: str) -> str:
     """If given the start and end date, this function will automate the leave application."""
     return f"Leave has been applied for {name} from {start} to {end} date."
 @tool
-def send_mail(text: Optional[str], subject: Optional[str], recipient: Optional[str], cc: Optional[str]) -> str:
+def send_mail(text: Optional[str], subject: Optional[str], recipient: Optional[str], cc: Optional[str]) -> None:
     """This function sends an email to the recipient with the given subject and text"""
-    return f"Email has been sent to {recipient} with subject: {subject} and text: {text}"
+    with open("mails.txt", "a") as file:
+        file.write(f"Email has been sent to {recipient} with subject: {subject} and text: {text}\n")
 @tool
 def can_apply_leave(emp_name: str) -> int:
     """This function takes in employee name and fetches the number of available leaves the employee has which can be used to approve leave applications."""
-    return np.random.randint(0, 3)
+    return np.random.randint(0, 10)
 @tool
 def date_diff(start: str, end: str) -> int:
     """This function takes in start date and end date strings in (dd/mm/yyyy format) and returns the total number of days between these two dates."""
