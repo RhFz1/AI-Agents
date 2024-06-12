@@ -1,10 +1,12 @@
 import os
 import csv
+import numpy as np
 from typing import Optional
 import datetime
 from dateutil import parser
 from langchain.agents import tool
 from typing import Tuple
+
 
 @tool
 def read_csv(input_path: str) -> str:
@@ -24,13 +26,23 @@ def get_current_time() -> datetime.datetime:
     """This function returns the current time for calculation purposes"""
     return datetime.datetime.now()
 @tool
-def automate_leave_application(name: str, start: str, end: str, reason: Optional[str]) -> str:
-    """If given the start and end date, this function will automate the leave application for the given reason which is optional"""
-    return f"Leave has been applied for {name} from {start} to {end} for the reason: {reason}"
+def automate_leave_application(name: str, start: str, end: str) -> str:
+    """If given the start and end date, this function will automate the leave application."""
+    return f"Leave has been applied for {name} from {start} to {end} date."
 @tool
 def send_mail(text: Optional[str], subject: Optional[str], recipient: Optional[str], cc: Optional[str]) -> str:
     """This function sends an email to the recipient with the given subject and text"""
     return f"Email has been sent to {recipient} with subject: {subject} and text: {text}"
+@tool
+def can_apply_leave(emp_name: str) -> int:
+    """This function takes in employee name and fetches the number of available leaves the employee has which can be used to approve leave applications."""
+    return np.random.randint(0, 3)
+@tool
+def date_diff(start: str, end: str) -> int:
+    """This function takes in start date and end date strings in (dd/mm/yyyy format) and returns the total number of days between these two dates."""
+    start = parser.parse(start)
+    end = parser.parse(end)
+    diff = end - start
+    return diff.days + 1
 
-
-mail_tools = [read_csv, get_current_date, send_mail, automate_leave_application, get_current_time]
+mail_tools = [read_csv, get_current_date, send_mail, automate_leave_application, can_apply_leave, date_diff]
