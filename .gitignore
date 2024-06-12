@@ -1,3 +1,6 @@
 .env
 data.csv
 .~lock.data.csv#
+.~lock.mail_data.csv#
+mail_data.csv
+prompt.txt
