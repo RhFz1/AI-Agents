@@ -1,9 +1,3 @@
 .env
-data.csv
-.~lock.data.csv#
-.~lock.mail_data.csv#
-.~lock.leave.csv#
-mail_data.csv
-prompt.txt
-mails.txt
-leave.csv
+/data
+/result

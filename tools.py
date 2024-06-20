@@ -14,7 +14,7 @@ def read_csv(input_path: str) -> str:
     with open(input_path, 'r') as file:
         csv_data = ''
         reader = csv.reader(file)
-        for row in reader:
+        for row in reader:  
             csv_data += ','.join(row) + '\n'
     return csv_data
 @tool
@@ -25,7 +25,7 @@ def get_current_date() -> Tuple[datetime.date, str]:
 def get_current_time() -> datetime.datetime:
     """This function returns the current time for calculation purposes"""
     return datetime.datetime.now()
-@tool
+@tool           
 def get_time_difference(start: str, end: str) -> int:
     """This function takes in start time and end time in HH:MM:SS format and returns the total number of hours between these two times"""
     start = datetime.datetime.strptime(start, "%H:%M:%S")
@@ -51,6 +51,10 @@ def date_diff(start: str, end: str) -> int:
     start = parser.parse(start)
     end = parser.parse(end)
     diff = end - start
-    return diff.days + 1
-
+    return diff.days + 1    
+@tool
+def read_from_db(date: str) -> str:
+    """This function reads the attendance data from a database for the given date"""
+    return "YES i have read the attendance data for " + date
+    
 mail_tools = [read_csv, get_current_date, send_mail, automate_leave_application, can_apply_leave, date_diff]

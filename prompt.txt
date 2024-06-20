@@ -1,0 +1,1 @@
+read data.csv and mail_data.csv, find out which employee/s didnt come on 18-06-2023 and send mails to their respective manager for a reason of absence.
