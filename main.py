@@ -7,13 +7,9 @@ with open("prompt.txt", "r") as file:
     text = file.read()
 
 for s in graph.stream(
-    {
-        "messages": [
-            HumanMessage(text)
-        ]
-    }
-        
+    {"messages": [HumanMessage(content=text)]},
+    {"recursion_limit": 100},
 ):
-    if '__end__' not in s:
+    if "__end__" not in s:
         print(s)
-        print('-----------')
+        print("----")
