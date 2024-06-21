@@ -3,29 +3,31 @@ import csv
 import datetime
 from io import StringIO
 from typing import Annotated, Optional, Tuple
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
-from langchain_experimental import repl
+from dotenv import load_dotenv
+load_dotenv()
 
 # Warning: This executes code locally, which can be unsafe when not sandboxed
 
 @tool
 def read_db_for_roster(date: str) -> str:
-    """This function reads a database which contains data regarding the availabilities of the personnel for the following passed date i.e., fetching the roster of personnel."""
-
+    """This function reads a database which contains data regarding the availabilities of the personnel for the following passed date (dd/mm/yyyy format) i.e., fetching the roster of personnel."""
     # lets assume here we are making an API call to the database which fetches the roster data for the current day.
     # for now, lets assume the API call returns a csv file.
     # lets try to read the contents of the file and save it temporarily.
     # here i should write a logic to fetch the file with the given date and return the data.
-    temp = __file__
-    csv_data = StringIO(temp)
+    datadir_path = os.path.join(os.environ.get('data_path') , 'roster_data')
+    file_path = os.path.join(datadir_path, f'{date}.csv')
 
     csv_string_data = ''
-    csv_reader = csv.reader(csv_data)
-
-    for row in csv_reader:
-        csv_string_data += ','.join(row) + '\n'
+    with open(file_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        
+        for row in csv_reader:
+            csv_string_data += ','.join(row) + '\n'
     
+    file.close()
+
     return csv_string_data
 
 def notification_logic(num: int) -> bool:
