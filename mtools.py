@@ -1,7 +1,8 @@
 import os
 import csv
+import datetime
 from io import StringIO
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Tuple
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 from langchain_experimental import repl
@@ -9,12 +10,13 @@ from langchain_experimental import repl
 # Warning: This executes code locally, which can be unsafe when not sandboxed
 
 @tool
-def read_db_for_roster(path: str) -> str:
-    """This function reads a database which contains data regarding the availabilities of the personnel i.e., fetching the roster of personnel."""
+def read_db_for_roster(date: str) -> str:
+    """This function reads a database which contains data regarding the availabilities of the personnel for the following passed date i.e., fetching the roster of personnel."""
 
     # lets assume here we are making an API call to the database which fetches the roster data for the current day.
     # for now, lets assume the API call returns a csv file.
     # lets try to read the contents of the file and save it temporarily.
+    # here i should write a logic to fetch the file with the given date and return the data.
     temp = __file__
     csv_data = StringIO(temp)
 
@@ -28,6 +30,15 @@ def read_db_for_roster(path: str) -> str:
 
 def notification_logic(num: int) -> bool:
     return True
+
+@tool
+def get_current_date() -> Tuple[datetime.date, str]:
+    """This function returns the current date and day of the week for calculation purposes"""
+    return datetime.date.today(), datetime.date.today().strftime("%A")
+@tool
+def get_current_time() -> datetime.datetime:
+    """This function returns the current time for calculation purposes"""
+    return datetime.datetime.now()  
 
 @tool
 def notify_roster_personnel(id: list, message: str) -> str:
