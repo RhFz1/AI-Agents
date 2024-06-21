@@ -74,11 +74,10 @@ database_reader_agent = create_agent(llm,
                                      "You are a database reader. You will read a database and return the data.")
 database_reader_agent_node = functools.partial(agent_node, agent=database_reader_agent, name="Database Reader")
 
-# NOTE: THIS PERFORMS ARBITRARY CODE EXECUTION. PROCEED WITH CAUTION
 notifier_agent = create_agent(
     llm,
     [notify_roster_personnel, get_current_time],
-    "You may generate safe python code to analyze data and generate charts using matplotlib.",
+    "Your job is to take the data from the database reader and notify the personnel regarding the emergency.",
 )
 notifier_agent_node = functools.partial(agent_node, agent=notifier_agent, name="Notifier")
 
