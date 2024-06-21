@@ -9,7 +9,7 @@ from langchain_experimental import repl
 # Warning: This executes code locally, which can be unsafe when not sandboxed
 
 @tool
-def read_db_for_roster(path: str) -> Optional[__file__]:
+def read_db_for_roster(path: str) -> str:
     """This function reads a database which contains data regarding the availabilities of the personnel i.e., fetching the roster of personnel."""
 
     # lets assume here we are making an API call to the database which fetches the roster data for the current day.
@@ -27,7 +27,7 @@ def read_db_for_roster(path: str) -> Optional[__file__]:
     return csv_string_data
 
 def notification_logic(num: int) -> bool:
-    pass
+    return True
 
 @tool
 def notify_roster_personnel(id: list, message: str) -> str:
