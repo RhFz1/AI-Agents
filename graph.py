@@ -9,6 +9,8 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 from mtools import read_db_for_roster, notify_roster_personnel, get_current_date, get_current_time
+from dotenv import load_dotenv
+load_dotenv()
 
 members = ["Database Reader", "Notifier"]
 system_prompt = (
@@ -78,11 +80,11 @@ notifier_agent = create_agent(
     [notify_roster_personnel, get_current_time],
     "You may generate safe python code to analyze data and generate charts using matplotlib.",
 )
-notifier_agent_node = functools.partial(agent_node, agent=notifier_agent, name="Coder")
+notifier_agent_node = functools.partial(agent_node, agent=notifier_agent, name="Notifier")
 
 workflow = StateGraph(AgentState)
 workflow.add_node("Database Reader", database_reader_agent_node)
-workflow.add_node("Coder", notifier_agent_node)
+workflow.add_node("Notifier", notifier_agent_node)
 workflow.add_node("supervisor", supervisor_chain)
 
 # this block is for adding links in the graph.
