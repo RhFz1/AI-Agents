@@ -9,34 +9,20 @@ load_dotenv()
 
 # Warning: This executes code locally, which can be unsafe when not sandboxed
 
+
 @tool
-def read_db_for_roster(date: str) -> str:
-    """This function reads a database which contains data regarding the availabilities of the personnel for the following passed date (dd-mm-yyyy format) i.e., fetching the roster of personnel."""
+def get_db_folders() -> str:
+    """This function returns the list of folders in the database directory (for eg. general_roster_data contains data for general medical personnel) you can use this to read the data which is relevant to the current task."""
+    return os.listdir(os.environ.get('data_path'))
+
+@tool
+def read_db_for_roster(folder_name: str, date: str) -> str:
+    """This function takes in a folder_name which is present in db and a date for which the data is supposed to be fetched. It returns the data from the folder for the given date."""
     # lets assume here we are making an API call to the database which fetches the roster data for the current day.
     # for now, lets assume the API call returns a csv file.
     # lets try to read the contents of the file and save it temporarily.
     # here i should write a logic to fetch the file with the given date and return the data.
-    datadir_path = os.path.join(os.environ.get('data_path') , 'roster_data')
-    file_path = os.path.join(datadir_path, f'{date}.csv')
-
-    csv_string_data = ''
-    with open(file_path, 'r') as file:
-        csv_reader = csv.reader(file)
-        
-        for row in csv_reader:
-            csv_string_data += ','.join(row) + '\n'
-    
-    file.close()
-
-    return csv_string_data
-@tool
-def read_db_for_specialist_availability(date: str) -> str:
-    """This function reads a database which contains data regarding the availabilities of the specialist doctors for the following passed date (dd-mm-yyyy format."""
-    # lets assume here we are making an API call to the database which fetches the roster data for the current day.
-    # for now, lets assume the API call returns a csv file.
-    # lets try to read the contents of the file and save it temporarily.
-    # here i should write a logic to fetch the file with the given date and return the data.
-    datadir_path = os.path.join(os.environ.get('data_path') , 'specialist_availability')
+    datadir_path = os.path.join(os.environ.get('data_path') , folder_name)
     file_path = os.path.join(datadir_path, f'{date}.csv')
 
     csv_string_data = ''
