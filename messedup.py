@@ -8,7 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
-from mtools import read_db, get_current_date, get_current_time, counter, notify_roster_personnel, get_db_folders
+from mtools import read_db_for_roster, get_current_date, get_current_time, counter, notify_roster_personnel, get_db_folders
 
 
 def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
@@ -89,7 +89,7 @@ def agent_node(state, agent, name):
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
 
-database_reader = create_agent(llm, [read_db, get_current_date, get_current_time, get_db_folders], "You are an agent which is responsible for reading the database and fetching the relevant data.")
+database_reader = create_agent(llm, [read_db_for_roster, get_current_date, get_current_time, get_db_folders], "You are an agent which is responsible for reading the database and fetching the relevant data.")
 database_reader_node = functools.partial(agent_node, agent=database_reader, name="DatabaseReader")
 
 # NOTE: THIS PERFORMS ARBITRARY CODE EXECUTION. PROCEED WITH CAUTION
