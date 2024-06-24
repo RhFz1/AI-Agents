@@ -29,6 +29,26 @@ def read_db_for_roster(date: str) -> str:
     file.close()
 
     return csv_string_data
+@tool
+def read_db_for_specialist_availability(date: str) -> str:
+    """This function reads a database which contains data regarding the availabilities of the specialist doctors for the following passed date (dd-mm-yyyy format."""
+    # lets assume here we are making an API call to the database which fetches the roster data for the current day.
+    # for now, lets assume the API call returns a csv file.
+    # lets try to read the contents of the file and save it temporarily.
+    # here i should write a logic to fetch the file with the given date and return the data.
+    datadir_path = os.path.join(os.environ.get('data_path') , 'specialist_availability')
+    file_path = os.path.join(datadir_path, f'{date}.csv')
+
+    csv_string_data = ''
+    with open(file_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        
+        for row in csv_reader:
+            csv_string_data += ','.join(row) + '\n'
+    
+    file.close()
+
+    return csv_string_data
 
 def notification_logic(num: int) -> bool:
     return True
